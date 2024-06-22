@@ -9,8 +9,9 @@ export default async function Home() {  // await쓰려면 함수 자체가 async
   console.log(result);
   return (
     <div>
-      <p>{result[0]?.title}</p>  {/* <p>{result[0]?.title}</p> 원래 일케 해주는게 좋음 */}
+      <p>{result[0]?.title}</p>
       <p>{result[0]?.content}</p>
+      {/* <p>{result[0]?.title}</p> 원래 일케 해주는게 좋음 */}
     </div>
   );
 }
@@ -22,3 +23,6 @@ export default async function Home() {  // await쓰려면 함수 자체가 async
 
 // app 폴더가 'http://localhost:3000/'
 // http://localhost:3000/list --> app폴더에 list폴더 만들고 page.js
+
+// 배포하려면 npm run build
+// build폴더의 내용을 클라우드(AWS, vercel)에 업로드하고 npm run start (AWS유료, vercel은 접속자수 적으면 무료)

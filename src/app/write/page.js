@@ -1,13 +1,11 @@
 export default function WritePage() {
     return (
-        <div>
-            <h4>글 작성 페이지</h4>
+        <div className='write-container'>
+            <h4>글 작성 페이지</h4><br/>
             {/* /api/test에 POST요청 */}
             <form action = '/api/post/new' method = 'POST'>
                 <input name = 'title' placeholder="제목을 입력하세요"/>
-                <br/>
                 <input name = 'content' placeholder="내용을 입력하세요"/>
-                <br/>
                 <button type = 'submit'>POST 요청 버튼</button>
             </form>
 

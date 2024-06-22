@@ -24,3 +24,34 @@ a {
   color:grey;
   margin:5px 0;
 }
+
+.write-container {
+  padding:20px;
+}
+
+.write-container input {
+  padding:10px;
+  /* inline-block(내공간만 차지) -> block(내 줄 전체 차지)*/
+  display:block;
+  margin-bottom:10px;
+}
+
+.write-container button {
+  padding:10px 15px;
+  background:lightgrey;
+  border:none;
+  border-radius: 5px;
+}
+
+.navbar {
+  background:white;
+  padding:20px;
+}
+.navbar a{
+  margin-right: 10px;
+  text-decoration: none;
+  color:black;
+}
+.logo {
+  font-weight: bold;
+}
