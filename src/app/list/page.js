@@ -5,6 +5,13 @@ import ListItem from "./listItem";
 export default async function ListPage() {
     const db = (await connectDB).db('mydb');    // await을 쓰려면 async function으로 써야함.
     let result = await db.collection('post').find().toArray();
+
+    // _id 를 문자열로 변환
+    result = result.map(item => ({
+        ...item,
+        _id : item._id.toString(),
+    }));
+
     return (
         <div className = 'list-bg'>
             <ListItem result={result}/>

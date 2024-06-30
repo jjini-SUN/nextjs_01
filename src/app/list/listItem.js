@@ -11,6 +11,7 @@ import { useState } from "react";
 export default function ListItem({result}) {
     // 받아온 데이터를 state로 변경 (화면 갱신을 위해서)
     const [listData, setListData] = useState(result);
+    console.log('리스트정보: ', result);
 
     return(
         <>
@@ -28,7 +29,7 @@ export default function ListItem({result}) {
                                 fetch('/api/delete/list_item',{
                                     method: 'DELETE',
                                     headers:{'Content-Type':'application/json'},
-                                    body: JSON.stringify({id:item._id})
+                                    body: JSON.stringify({id:item._id, email:item.email})
                                 })
                                 .then((res)=>{
                                     //fetch가 완료되면 실행할 코드 (res)에는 서버응답이 담겨있음
@@ -38,6 +39,10 @@ export default function ListItem({result}) {
                                         // filter() : 입력한 값을 배열에서 찾아 걸러줌
                                         setListData(prev => prev.filter((i)=>i._id !== item._id));
                                         return res.json();  // then에서 return을 하면 다음 then의 매개변수로 옮겨감
+                                    }
+                                    else if(res.status == 400) {
+                                        alert('글 작성자만 삭제할 수 있습니다');
+                                        return res.json();
                                     }
                                     else {
                                         // 200 성공이 아닐 때는 state를 변경하지 않는다

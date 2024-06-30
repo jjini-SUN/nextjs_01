@@ -55,3 +55,14 @@ a {
 .logo {
   font-weight: bold;
 }
+.navbar button {
+  padding:10px 15px;
+  border:none;
+  border-radius: 5px;
+  background:rgb(215, 240, 250)
+}
+input {
+  padding:10px;
+  display: block;
+  margin-bottom: 10px;
+}

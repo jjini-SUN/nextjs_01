@@ -2,8 +2,10 @@
 // 기존의 내용을 먼저 보여줌
 // 수정하기 버튼을 누르면 수정하는 페이지로 POST 요청
 
+import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { connectDB } from "@/util/db";
 import { ObjectId } from "mongodb";
+import { getServerSession } from "next-auth";
 
 export default async function EditPage({params})
 {
@@ -12,22 +14,38 @@ export default async function EditPage({params})
     console.log(params.slug)
     // params.slug를 사용해서 DB에서 검색을 하고
     // input의 기본값에 세팅한다.
-    const db = (await connectDB).db("mydb");
-    let result = await db.collection("post").findOne({_id:ObjectId.createFromHexString(params.slug)});
-    // find().toArray() : 전체 다 가져오기
-    // findOne() : 하나만 가져오기
-    console.log(result);
-    return(
-        <div className='write-container'>
-            <h4>수정페이지</h4><br/>
-            <form action="/api/post/edit" method="POST">
-                <input type='hidden' name="id" defaultValue={result._id}/>
-                <input name="title" defaultValue={result.title}/>
-                <input name="content" defaultValue={result.content}/>
-                <button type="submit">수정하기</button>
-            </form>
-        </div>
-    )
+
+    let session = await getServerSession(authOptions); //현재 로그인 정보를 가져온다
+    if(session){
+        const db = (await connectDB).db("mydb");
+        let result = await db.collection("post").findOne({_id:ObjectId.createFromHexString(params.slug)});
+        // find().toArray() : 전체 다 가져오기
+        // findOne() : 하나만 가져오기
+
+        //로그인한 이메일이 글의 이메일과 동일한지 체크 (관리자는 가능하게)
+        if(session.user?.email === result.email || session.user?.email === 'dhkim@user.com') {
+            const resultIdString = result._id.toString();
+            return(
+                <div className='write-container'>
+                    <h4>수정페이지</h4><br/>
+                    <form action="/api/post/edit" method="POST">
+                        <input type='hidden' name="id" defaultValue={resultIdString}/>
+                        <input name="title" defaultValue={result.title}/>
+                        <input name="content" defaultValue={result.content}/>
+                        <button type="submit">수정하기</button>
+                    </form>
+                </div>
+            )  
+        }else {
+            return(
+                <div>글 수정은 작성자만 가능해요</div>
+            )
+        }
+    }else {
+        return(
+            <div>글 수정은 작성자만 가능해요</div>
+        )
+    }
 }
 
 //GET : 받아올 때

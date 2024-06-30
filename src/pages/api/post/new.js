@@ -3,20 +3,30 @@
 */
 
 import { connectDB } from "@/util/db";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../auth/[...nextauth]";
 
 export default  async function writeHandler(req, res) {
     // POST요청에는 body라는 곳에 데이터를 담아보냄 (req.body에 input으로 입력한 것들이 있음)
-    console.log(req.body);
+    // console.log(req.body);
+    let session = await getServerSession(req, res, authOptions);    // 로그인 정보
+    console.log(session);
 
     if(req.method == 'POST') {
         // body에 담긴 값들을 꺼내고 비어있지 않으면 mongoDB에 insertOne 입력
         // 리스트 페이지로 돌려보내기 (302, 'URL')
         let {title, content} = req.body;
-        if(title && content) {  // title도 비어있지 않고, content도 비어있지 않으면
+
+        if(session) {
+            req.body.email = session.user?.email;   //user? : user가 없을 수도 있으니까
+        }
+
+        if(title && content && req.body.email) {  // title도 비어있지 않고, content도 비어있지 않으면
             try {
                 // 이 코드로 실행
+                const email = req.body.email;
                 const db = (await connectDB).db('mydb');
-                let result = await db.collection('post').insertOne({title, content});
+                let result = await db.collection('post').insertOne({title, content, email});    // 제목, 내용, 이메일
                 return res.redirect(302, '/list');  //끝나면 /list 페이지로 이동시키기
             }catch(error) {
                 // try 코드 실행마다 에러나면 이쪽으로 즉시 이동
