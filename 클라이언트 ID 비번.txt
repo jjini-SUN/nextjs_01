@@ -1,0 +1,18 @@
+GoogleProvider({
+            clientId:'1031657385047-cdpjitmk8co0ccv3j2809dm5ujnl7jkh.apps.googleusercontent.com',    //구글 클라이언트 ID
+            clientSecret:'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',    //구글 클라이언트 보안 비밀번호
+        }),
+        GithubProvider({
+            clientId:'Ov23liDvNpqyrLYxmD45',    //깃허브 클라이언트 ID
+            clientSecret:'770a978326309b7267a40dfe30c6e51953ea2322',    //깃허브 클라이언트 비밀번호
+        }),
+        CredentialsProvider({   // 검색하면 많이 나옴
+            //회원가입한 아이디로 로그인
+            name:'credentials',
+            credentials:{
+                email:{label:"아이디", type:"text"}, //label은 내가 넣고 싶은거, type은 정해져 있음
+                password: {label:"비밀번호", type:"password"},
+            },
+
+
+--> [...nextauth].js 파일
